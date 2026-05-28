@@ -1,31 +1,111 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import api from '../services/api'
-import type { Monster } from '../types/monter'
 
-const monsters = ref<Monster[]>([])
+import MonsterCard from '@/components/cards/MonsterCard.vue'
 
-async function fectchMonsters(): Promise<void> {
-  try {
-    const response = await api.get('/monsters')
+import { useMonsters } from '@/composables/useMonsters'
 
-    monsters.value = response.data
-  } catch (error) {
-    console.error(error)
-  }
-}
+const {
+  loading,
+  error,
 
-onMounted(() => {
-  fectchMonsters()
-})
+  currentPage,
+  totalPages,
+
+  nextPage,
+  previousPage,
+
+  paginatedMonsters
+
+} = useMonsters()
+
 </script>
 
 <template>
-  <div>
-    <h2>Monster List</h2>
 
-    <div v-for="monster in monsters" :key="monster.id">
-      {{ monster.name }}
+  <section class="home-view">
+
+    <h1 class="page-title">
+      Monster Hunter Compendium
+    </h1>
+
+    <div v-if="loading" class="feedback-message">
+      Loading monsters...
     </div>
-  </div>
+
+    <div v-else-if="error" class="feedback-message error">
+      {{ error }}
+    </div>
+
+    <div v-else class="monster-list">
+
+      <MonsterCard v-for="monster in paginatedMonsters" :key="monster.monster_id" :monster="monster" />
+
+    </div>
+
+    <div class="pagination" v-if="!loading">
+
+      <button @click="previousPage" :disabled="currentPage === 1">
+        Previous
+      </button>
+
+      <span>
+        Page {{ currentPage }}
+        of {{ totalPages }}
+      </span>
+
+      <button @click="nextPage" :disabled="currentPage === totalPages">
+        Next
+      </button>
+
+    </div>
+
+  </section>
+
 </template>
+
+<style scoped>
+.home-view {
+  padding: 2rem;
+}
+
+.page-title {
+  margin-bottom: 2rem;
+}
+
+.feedback-message {
+  font-size: 1.2rem;
+}
+
+.error {
+  color: #ff6b6b;
+}
+
+.monster-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.pagination {
+  margin-top: 2rem;
+
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+button {
+  padding: 0.5rem 1rem;
+
+  border: none;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+</style>
