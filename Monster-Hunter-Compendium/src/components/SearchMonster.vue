@@ -12,10 +12,11 @@ export default {
 </script>
 
 <template>
-    <b-form-input
+    <input
+        type="text"
         :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)"
+        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
         placeholder="Busque por um monstro..."
-        class="w-50 mb-3"
+        class="form-control"
     />
 </template>
