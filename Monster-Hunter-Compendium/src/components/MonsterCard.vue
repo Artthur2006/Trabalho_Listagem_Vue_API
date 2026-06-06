@@ -12,9 +12,8 @@ export default {
         monsterName() {
             if (this.monster) {
                 return capitalize(this.monster.name)
-            } else {
-                return ''
             }
+            return ''
         }
     },
 
@@ -24,7 +23,7 @@ export default {
                 this.$router.push({
                     name: 'monster-details',
                     params: {
-                        id: this.monster.id
+                        id: this.monster.monster_id
                     }
                 })
             }
@@ -34,14 +33,24 @@ export default {
 </script>
 
 <template>
+    
     <b-card
-        :title="monsterName"
         class="text-center mb-3 card-monster"
     >
-        <b-img
-            src="https://placehold.co/200x200?text=Monster"
-            style="height: 120px;"
+        <h5>{{ monsterName }}</h5>
+        
+        <img
+            v-if="monster.image_url"
+            :src="monster.image_url"
+            fluid
+            style="height: 150px;"
+            class="mb-2"
         />
+
+        <p>
+            <strong>Categoria:</strong>
+            {{ monster.category }}
+        </p>
 
         <b-button
             variant="primary"
