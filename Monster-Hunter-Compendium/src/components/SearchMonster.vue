@@ -12,11 +12,7 @@ export default {
 </script>
 
 <template>
-    <input
-        type="text"
-        :value="modelValue"
+    <input type="text" :value="modelValue"
         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-        placeholder="Busque por um monstro..."
-        class="form-control"
-    />
+        placeholder="Busque por nome, apelido ou categoria..." class="form-control" />
 </template>
