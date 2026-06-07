@@ -3,11 +3,9 @@ import { capitalize } from 'vue';
 
 export default {
     name: 'MonsterCard',
-
     props: {
         monster: Object
     },
-
     computed: {
         monsterName() {
             if (this.monster) {
@@ -16,15 +14,12 @@ export default {
             return ''
         }
     },
-
     methods: {
         seeDetails() {
             if (this.monster) {
                 this.$router.push({
                     name: 'monster-details',
-                    params: {
-                        id: this.monster.monster_id
-                    }
+                    params: { id: this.monster.monster_id }
                 })
             }
         }
@@ -33,37 +28,24 @@ export default {
 </script>
 
 <template>
-    
-    <b-card
-        class="text-center mb-3 card-monster"
-    >
-        <h5>{{ monsterName }}</h5>
-        
-        <img
-            v-if="monster.image_url"
-            :src="monster.image_url"
-            fluid
-            style="height: 150px;"
-            class="mb-2"
-        />
+    <div class="card h-100 w-100 shadow-sm border-0" style="background-color: #f8f9fa;">
 
-        <p>
-            <strong>Categoria:</strong>
-            {{ monster.category }}
-        </p>
+        <img v-if="monster && monster.image_url" :src="monster.image_url" :alt="monsterName" class="card-img-top p-3"
+            style="height: 180px; object-fit: contain;" />
 
-        <b-button
-            variant="primary"
-            class="mt-2"
-            @click="seeDetails()"
-        >
-            Ver Detalhes
-        </b-button>
-    </b-card>
+        <div class="card-body d-flex flex-column text-center">
+
+            <h5 class="card-title fw-bold mb-3">{{ monsterName }}</h5>
+
+            <p class="card-text text-muted mb-4">
+                <small><strong>Categoria:</strong></small><br>
+                {{ monster.category }}
+            </p>
+
+            <button type="button" class="btn btn-primary mt-auto fw-semibold w-100" @click="seeDetails()">
+                Ver Detalhes
+            </button>
+
+        </div>
+    </div>
 </template>
-
-<style>
-.card-monster {
-    width: 250px;
-}
-</style>
