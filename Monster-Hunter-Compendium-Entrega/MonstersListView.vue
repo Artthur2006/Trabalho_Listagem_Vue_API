@@ -57,11 +57,12 @@ export default {
             return this.filteredMonsters.slice(start, end)
         },
         totalPages(): number {
-            return Math.ceil(this.filteredMonsters.length / this.limit) || 1
+            return Math.ceil(this.total_monsters / this.limit) || 1
         }
     },
     watch: {
         search() {
+            this.total_monsters = this.filteredMonsters.length
             this.current_page = 1
             localStorage.setItem('mh_current_page', '1');
         },
